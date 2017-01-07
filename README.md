@@ -23,7 +23,7 @@ or Download zip file and extract
 cd build\exec
 Click on clip.exe file
 ```
-![Demo](raw.gif?raw=true "Demo : Windows gui mode")
+![Demo](out.gif?raw=true "Demo : Windows gui mode")
 
 ### From command line 
 
