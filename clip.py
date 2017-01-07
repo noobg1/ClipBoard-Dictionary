@@ -1,41 +1,54 @@
 import time
 import sys
 import os
-sys.path.append(os.path.abspath("SO_site-packages"))
-import Tkinter
-window = Tkinter.Tk()
-window.wm_withdraw()
-
 import pyperclip
 import json
 from PyDictionary import PyDictionary
-dictionary=PyDictionary()
-
 from pprint import pprint
-import easygui
+from easygui import *
+import Tkinter
 
-
-
-
-
+dictionary=PyDictionary()
+window = Tkinter.Tk()
+window.wm_withdraw()
+sys.path.append(os.path.abspath("SO_site-packages"))
 
 
 recent_value = ""
-while True:
+start = True
+continue_check = True
+pyperclip.copy('') 
+
+while continue_check:
     tmp_value = pyperclip.paste()
-    if tmp_value != recent_value:
+    
+    if start:
+        msgbox("Service Started", title="simple gui") 
+        start = False
+
+    elif tmp_value != recent_value:
         recent_value = tmp_value
         print "Value changed: %s" % str(recent_value)[:20]
         try:
 	        result = dictionary.meaning(str(recent_value))
 	        for key, value in result.items():
 	    		print value
-	    		msg = ""
-	    		for v in value:
-	    			msg += v + ".\n"
-	    		print msg
-	    		easygui.msgbox(msg, title="simple gui")
-        except:
-    		print "Value not found"
-    		easygui.msgbox("Value not found", title="simple gui")
+	    		msg = "# " + recent_value
+                msg += "\n\n" + "# " + key + "\n\n"
+                for v in value[:5]:
+	    			msg += ". " + v + ".\n"
+	    		
+                print msg
+	    		
+                choices = ["Continue","Stop Service"]
+                
+                reply=buttonbox(msg,title="simple gui",choices=choices)
+                print reply
+                if reply == 'Stop Service': 
+                    continue_check = False
+        except Exception as e:
+    		print e           
+    		msgbox("Value not found or check internet connection", title="simple gui")
     time.sleep(0.1)
+
+sys.exit(0) 
