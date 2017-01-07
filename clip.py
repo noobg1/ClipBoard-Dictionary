@@ -23,7 +23,7 @@ while continue_check:
     tmp_value = pyperclip.paste()
     
     if start:
-        msgbox("Service Started", title="simple gui") 
+        msgbox("Service Started", title="ClipBoard Dictionary") 
         start = False
 
     elif tmp_value != recent_value:
@@ -48,7 +48,7 @@ while continue_check:
                     continue_check = False
         except Exception as e:
     		print e           
-    		msgbox("Value not found or check internet connection", title="simple gui")
+    		msgbox("Value not found or check internet connection", title="ClipBoard Dictionary")
     time.sleep(0.1)
 
 sys.exit(0) 

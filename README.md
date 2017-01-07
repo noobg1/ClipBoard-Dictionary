@@ -4,7 +4,30 @@
 
 These instructions will get you a copy of the project up and running on your local machine for development. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites for Windows
+
+### Getting files
+
+```
+git clone https://github.com/noobg1/ClipBoard-Dictionary.git
+cd ClipBoard_Dictonary
+ENV\scripts\activate
+
+or Download zip file and extract
+
+```
+## Running the app
+
+
+### From gui
+```
+cd build\exec
+Click on clip.exe file
+```
+![Demo](raw.gif?raw=true "Demo : Windows gui mode")
+
+### From command line 
+
+### Prerequisites for Linux
 
 * git
 * Python2.4
@@ -13,25 +36,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ```
 pip install virtualenv
-
-```
-### Installing
-
-```
-git clone https://github.com/noobg1/ClipBoard-Dictionary.git
-cd ClipBoard_Dictonary
-ENV\scripts\activate
-```
-## Running the app
-
-### From command line 
-```
+source ENV/Scripts/activate
 python clip.py
 
-```
-### From gui
-```
-cd build\exec
 
 ```
-Click on clip.exe file
