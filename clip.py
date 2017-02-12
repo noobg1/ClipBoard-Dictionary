@@ -7,6 +7,14 @@ from PyDictionary import PyDictionary
 from pprint import pprint
 from easygui import *
 import Tkinter
+from sound import play
+from time import sleep
+from concurrent.futures import ThreadPoolExecutor
+from textblob import Word
+from offlineDictionary import offline_meaning
+from file_write import write_to_file
+
+executor = ThreadPoolExecutor(2)
 
 dictionary=PyDictionary()
 window = Tkinter.Tk()
@@ -27,6 +35,7 @@ while continue_check:
         start = False
 
     elif tmp_value != recent_value:
+        continue_to_play = True
         recent_value = tmp_value
         print "Value changed: %s" % str(recent_value)[:20]
         try:
@@ -37,18 +46,46 @@ while continue_check:
                 msg += "\n\n" + "# " + key + "\n\n"
                 for v in value[:5]:
 	    			msg += ". " + v + ".\n"
+	    	
 	    		
-                print msg
-	    		
-                choices = ["Continue","Stop Service"]
+                choices = ["Continue","Stop Service", "Pronunciation", "Mark"]
                 
-                reply=buttonbox(msg,title="simple gui",choices=choices)
-                print reply
-                if reply == 'Stop Service': 
-                    continue_check = False
+                while(continue_to_play):
+                    reply=buttonbox(msg,title="simple gui",choices=choices)
+                    print reply
+                    if reply == 'Stop Service': 
+                        continue_check = False
+                        continue_to_play = False
+                    elif reply == 'Pronunciation':
+                        executor.submit(play,recent_value)
+                    elif reply == 'Continue':
+                        continue_to_play = False
+                    elif reply == 'Mark':
+                        write_to_file(msg)
+        
         except Exception as e:
-    		print e           
-    		msgbox("Value not found or check internet connection", title="simple gui")
+                result = '#' + recent_value + '\n\n' + offline_meaning(recent_value) + '\n\n ~ offline'
+                choices = ["Continue","Stop Service", "Pronunciation"]
+                while(continue_to_play):
+                    reply=buttonbox(result,title="simple gui",choices=choices)
+                    print reply
+                    if reply == 'Stop Service': 
+                        continue_check = False
+                        continue_to_play = False
+                    elif reply == 'Pronunciation':
+                        executor.submit(play,recent_value)
+                    elif reply == 'Continue':
+                        continue_to_play = False
+                    elif reply == 'Mark':
+                        write_to_file(msg)
+                            
+                msgbox("Value not found or check internet connection", title="simple gui")
     time.sleep(0.1)
 
 sys.exit(0) 
+			
+			
+			
+			
+			
+			
